@@ -1,13 +1,15 @@
 import Link from "next/link";
 
+import FileDropzone from "../../components/ui/file-dropzone"
+
 import { buttonVariants } from "@/components/ui/button";
 
-export default function Home() {
+export default function TransferPage() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <input type="file" />
-      </main>
-    </div>
+    <main className="flex flex-col justify-center items-center w-full h-full">
+      <div className="flex justify-center items-center w-1/2 h-1/2">
+        <FileDropzone></FileDropzone>
+      </div>
+    </main>
   );
 }
