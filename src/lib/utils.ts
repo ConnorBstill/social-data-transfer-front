@@ -30,7 +30,7 @@ export const getAllFileEntries = async (
       const dirEntry = entry as FileSystemDirectoryEntry;
       const reader = dirEntry.createReader();
 
-      queue.push(...(await readAllDirectoryEntries(reader)));
+      queue.push(...await readAllDirectoryEntries(reader));
     }
   }
 

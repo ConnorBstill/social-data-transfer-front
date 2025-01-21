@@ -16,12 +16,14 @@ declare module "react" {
 
 interface Folder {
   name: string;
-  files: FileSystemEntry[];
+  files: FileSystemEntry[] | FileList;
 }
 
 export default function FileDropzone() {
   const [dragCounter, setDragCounter] = useState(0);
   const [uploadedFolders, setUploadedFolders] = useState<Folder[]>([]);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -58,19 +60,29 @@ export default function FileDropzone() {
           { name: files[0].fullPath.split("/")[1], files },
         ];
       });
-
-      console.log("files", files);
     }
   };
 
   const handleFileButtonUpload = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log("file CHANGE", e);
+
+    const files = e.target.files;
+
+    if (files && files.length) {
+      setUploadedFolders((prevFolders) => {      
+        return [
+          ...prevFolders,
+          { name: files[0].webkitRelativePath.split('/')[0], files }
+        ]
+      })
+    }
   };
 
   const handleRemoveFilesClick = (index: number) => {
-    console.log(index, uploadedFolders);
+    // Allows the user to upload the same file again if they accidentally delete it
+    fileInputRef.current!.value = "";
+
     setUploadedFolders((prevFolders) => {
       const copy = [...prevFolders];
       copy.splice(index, 1);
@@ -87,6 +99,7 @@ export default function FileDropzone() {
           className="flex flex-row w-full justify-between"
         >
           <span className="font-bold">{name}</span>
+
           <X
             onClick={() => handleRemoveFilesClick(i)}
             className="cursor-pointer"
@@ -123,9 +136,11 @@ export default function FileDropzone() {
             id="file-upload"
             className="hidden-input"
             webkitdirectory="true"
+            multiple
             disabled={uploadedFolders.length === 2}
+            ref={fileInputRef}
           />
-          Upload Files
+            Upload Files
         </label>
       </>
     );
