@@ -1,16 +1,18 @@
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 
-export const getAllFileEntries = async (items: DataTransferItemList): Promise<FileSystemEntry[]> => {
+export const getAllFileEntries = async (
+  items: DataTransferItemList,
+): Promise<FileSystemEntry[]> => {
   const files: FileSystemEntry[] = [];
 
   const queue: (FileSystemEntry | FileSystemDirectoryEntry)[] = [];
 
-  for (let i = 0; i< items.length; i++) {
+  for (let i = 0; i < items.length; i++) {
     const item: DataTransferItem = items[i];
 
     if (item) {
@@ -22,18 +24,18 @@ export const getAllFileEntries = async (items: DataTransferItemList): Promise<Fi
     const entry = queue.shift();
 
     if (entry?.isFile) {
-      const fileEntry = entry as FileSystemEntry
+      const fileEntry = entry as FileSystemEntry;
       files.push(fileEntry);
     } else if (entry?.isDirectory) {
-      const dirEntry = entry as FileSystemDirectoryEntry
+      const dirEntry = entry as FileSystemDirectoryEntry;
       const reader = dirEntry.createReader();
 
-      queue.push(...await readAllDirectoryEntries(reader))
+      queue.push(...(await readAllDirectoryEntries(reader)));
     }
   }
 
   return files;
-}
+};
 
 const readAllDirectoryEntries = async (reader: FileSystemDirectoryReader) => {
   const entries: FileSystemEntry[] = [];
@@ -47,14 +49,16 @@ const readAllDirectoryEntries = async (reader: FileSystemDirectoryReader) => {
   }
 
   return entries;
-}
+};
 
-const readEntriesPromise = async (reader: FileSystemDirectoryReader): Promise<any> => {
+const readEntriesPromise = async (
+  reader: FileSystemDirectoryReader,
+): Promise<any> => {
   try {
     return await new Promise((resolve, reject) => {
-      reader.readEntries(resolve, reject)
+      reader.readEntries(resolve, reject);
     });
   } catch (err) {
-    console.log('readEntriesPromise error', err)
+    console.log("readEntriesPromise error", err);
   }
-}
+};

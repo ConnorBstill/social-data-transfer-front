@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import FileDropzone from "../../components/ui/file-dropzone"
+import FileDropzone from "../../components/ui/file-dropzone";
 
 import { buttonVariants } from "@/components/ui/button";
 
