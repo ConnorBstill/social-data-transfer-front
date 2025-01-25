@@ -53,7 +53,7 @@ const readAllDirectoryEntries = async (reader: FileSystemDirectoryReader) => {
 
 const readEntriesPromise = async (
   reader: FileSystemDirectoryReader,
-): Promise<any> => {
+): Promise<FileSystemEntry[]> => {
   try {
     return await new Promise((resolve, reject) => {
       reader.readEntries(resolve, reject);

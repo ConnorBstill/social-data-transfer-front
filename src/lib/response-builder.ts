@@ -1,11 +1,11 @@
-interface Response {
-  data: any;
-  msg: string;
-  err: boolean;
-}
+// interface Response<T> {
+//   data: T;
+//   msg: string;
+//   err: boolean;
+// }
 
 interface MainResponseBuilderOptions {
-  error?: any;
+  error?: Error;
   log?: boolean;
 }
 
@@ -26,12 +26,12 @@ class ResponseBuilderOptions {
   }
 }
 
-export const ResponseBuilder = (
-  data: any,
+export const ResponseBuilder = <T>(
+  data: T,
   msg: string = null,
   err: boolean = false,
   builderOptions?: MainResponseBuilderOptions,
-): Response | any => {
+): string => {
   const options = new ResponseBuilderOptions(builderOptions);
 
   if (err) {

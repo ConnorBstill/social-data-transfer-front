@@ -1,13 +1,11 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
 import { ResponseBuilder } from '../../../lib/response-builder';
 
-export const GET = async (req: NextRequest, res: NextResponse) => {
+export const GET = async () => {
   try {
-    const term = req.nextUrl.searchParams.get('term');
 
-
-    return new NextResponse(ResponseBuilder({  }));
+    return new NextResponse(ResponseBuilder({ blah: 'blah' }));
   } catch (err) {
     console.error('error in api/related-words', err);
     return new NextResponse(

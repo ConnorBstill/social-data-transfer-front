@@ -2,9 +2,8 @@
 
 import React, { useRef, useState, type ChangeEvent } from "react";
 
-import { Button, buttonVariants } from "@/components/ui/button";
-import Link from "next/link";
-import { CircleX, X } from "lucide-react";
+import { buttonVariants } from "@/components/ui/button";
+import { X } from "lucide-react";
 
 import { getAllFileEntries } from "../../lib/utils";
 
