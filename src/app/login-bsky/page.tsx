@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { buttonVariants } from "@/components/ui/button";
 
-export default function Home() {
+export default function LoginPage() {
   return (
     <main className="flex flex-col justify-center items-center w-full h-full">
       <p className="mb-5">
