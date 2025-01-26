@@ -63,9 +63,9 @@ export const createClient = async () => {
       client_name: "AT Protocol Express App",
       client_id: publicUrl
         ? `${url}/api/client-metadata.json`
-        : `http://localhost?redirect_uri=${enc(`${url}/oauth/callback`)}&scope=${enc("atproto transition:generic")}`,
+        : `http://localhost?redirect_uri=${enc(`${url}/api/oauth/callback`)}&scope=${enc("atproto transition:generic")}`,
       client_uri: url,
-      redirect_uris: [`${url}/oauth/callback`],
+      redirect_uris: [`${url}/api/oauth/callback`],
       scope: "atproto transition:generic",
       grant_types: ["authorization_code", "refresh_token"],
       response_types: ["code"],

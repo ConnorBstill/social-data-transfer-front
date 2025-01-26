@@ -21,14 +21,12 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     }
 
     const oauthClient: OAuthClient = await createClient();
-
     const url = await oauthClient.authorize(handle, {
       scope: "atproto transition:generic",
     });
 
     const redirectUrl = url.toString();
     // connorbstill.bsky.social
-    console.log("redirectUrl", redirectUrl);
     return NextResponse.redirect(redirectUrl, { status: 307 });
   } catch (err) {
     console.error("error in api/related-words", err);

@@ -1,10 +1,5 @@
-import Link from "next/link";
-
-import { Input } from "@/components/ui/input";
-
-import { Button, buttonVariants } from "@/components/ui/button";
 import { BlueskyLogo } from "@/components/ui/svg/bluesky-logo";
-import { LoginField } from "@/components/ui/login-button";
+import { LoginField } from "../../components/ui/login-field";
 
 export default function LoginPage() {
   return (
