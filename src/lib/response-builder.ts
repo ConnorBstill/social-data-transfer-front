@@ -36,7 +36,7 @@ export const ResponseBuilder = <T>(
 
   if (err) {
     if (options.log) {
-      console.error('An error occurred', options.error);
+      console.error("An error occurred", options.error);
     }
 
     if (options.error) {

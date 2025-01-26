@@ -69,12 +69,12 @@ export default function FileDropzone() {
     const files = e.target.files;
 
     if (files && files.length) {
-      setUploadedFolders((prevFolders) => {      
+      setUploadedFolders((prevFolders) => {
         return [
           ...prevFolders,
-          { name: files[0].webkitRelativePath.split('/')[0], files }
-        ]
-      })
+          { name: files[0].webkitRelativePath.split("/")[0], files },
+        ];
+      });
     }
   };
 
@@ -139,7 +139,7 @@ export default function FileDropzone() {
             disabled={uploadedFolders.length === 2}
             ref={fileInputRef}
           />
-            Upload Files
+          Upload Files
         </label>
       </>
     );
