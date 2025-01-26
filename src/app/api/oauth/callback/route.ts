@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 
-import { ResponseBuilder } from "../../../lib/response-builder";
+import { ResponseBuilder } from "../../../../lib/response-builder";
 
-export const POST = async () => {
+export const GET = async () => {
   try {
     return new NextResponse(ResponseBuilder({ blah: "blah" }));
   } catch (err) {

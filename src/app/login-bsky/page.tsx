@@ -2,8 +2,9 @@ import Link from "next/link";
 
 import { Input } from "@/components/ui/input";
 
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { BlueskyLogo } from "@/components/ui/svg/bluesky-logo";
+import { LoginField } from "@/components/ui/login-button";
 
 export default function LoginPage() {
   return (
@@ -14,17 +15,15 @@ export default function LoginPage() {
           <BlueskyLogo height={50} width={50} />
         </div>
 
-        <p className="text-center">Providing your Bluesky handle and pressing "Log In" will redirect you to Bluesky to enter your password. After doing so, it will redirect you back here to start the process of uploading your chosen social media data and allow Bluesky to give temporary permission to this site to publish it to your account. We do not interact with or store your password in any way, and we do not keep your uploaded data.</p>
-        
-        <div className="flex flex-row justify-center items-center w-3/4">
-          <Input className="w-2/3 mr-5" placeholder="Enter your handle (e.g. alice.bsky.social)"/>
+        <p className="text-center">
+          Providing your Bluesky handle and pressing "Log In" will redirect you
+          to Bluesky Bluesky to give temporary permission to this site to
+          publish it to your account. We do not interact with or store your
+          password in any way, and we do not keep your uploaded data.
+        </p>
 
-          <Link
-            href="/transfer"
-            className={buttonVariants({ variant: "default" })}
-          >
-            Log In
-          </Link>
+        <div className="flex flex-row justify-center items-center w-3/4">
+          <LoginField />
         </div>
       </div>
     </main>
