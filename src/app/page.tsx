@@ -23,7 +23,7 @@ export default function Home() {
 
       <div className="flex justify-center w-full">
         <Link
-          href="/transfer"
+          href="/login-bsky"
           className={buttonVariants({ variant: "default" })}
         >
           Begin
