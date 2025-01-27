@@ -11,7 +11,7 @@ interface LoginRequestBody {
   handle: string;
 }
 
-export const POST = async (req: NextRequest, res: NextResponse) => {
+export const POST = async (req: NextRequest) => {
   try {
     const body = (await req.json()) as LoginRequestBody;
     const handle = body.handle;

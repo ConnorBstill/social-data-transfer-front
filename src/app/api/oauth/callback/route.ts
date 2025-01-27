@@ -11,7 +11,7 @@ interface Session {
   did: string;
 }
 
-export const GET = async (req: NextRequest, res: NextResponse) => {
+export const GET = async (req: NextRequest) => {
   try {
     const params = new URLSearchParams(req.url.split("?")[1]);
     const oauthClient = await createClient();
@@ -26,7 +26,7 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
 
     await clientSession.save();
 
-    return NextResponse.redirect(`${process.env.APP_URL}/transfer`, {
+    return NextResponse.redirect(`${process.env.PUBLIC_URL}/transfer`, {
       status: 307,
     });
   } catch (err) {
