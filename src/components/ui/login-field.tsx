@@ -17,8 +17,12 @@ export const LoginField = () => {
         },
         body: JSON.stringify({ handle: inputRef.current.value }),
       });
-      console.log('loginResponse', loginResponse)
-      window.location.href = loginResponse.url;
+
+      const loginResponseData = await loginResponse.json();
+
+      if (loginResponseData.data?.redirectUrl) {
+        window.location.href = loginResponseData.data?.redirectUrl;
+      }
     } catch (err) {
       console.error("handleLoginClick", err);
     }

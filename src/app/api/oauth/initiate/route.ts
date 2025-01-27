@@ -27,11 +27,11 @@ export const POST = async (req: NextRequest) => {
 
     const redirectUrl = url.toString();
     // connorbstill.bsky.social
-    return NextResponse.redirect(redirectUrl, { status: 307 });
+    return new NextResponse(ResponseBuilder({ redirectUrl }, "success", false));
   } catch (err) {
     console.error("error in api/oauth/initiate", err);
     return new NextResponse(
-      ResponseBuilder([], "Error fetching word list", true),
+      ResponseBuilder(null, "Error fetching word list", true),
     );
   }
 };
