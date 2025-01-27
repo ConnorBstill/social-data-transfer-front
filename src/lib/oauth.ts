@@ -12,7 +12,7 @@ import { eq } from "drizzle-orm";
 
 const sessionStore: NodeSavedSessionStore = {
   async set(key: string, sessionData: NodeSavedSession) {
-    const session = JSON.stringify(sessionData);
+    const session = sessionData;
 
     await db.insert(authSession).values({ key, session });
   },
@@ -24,7 +24,7 @@ const sessionStore: NodeSavedSessionStore = {
 
     if (!sessionData.session) return undefined;
 
-    return JSON.parse(sessionData.session) as NodeSavedSession;
+    return sessionData.session;
   },
 
   async del(key: string): Promise<void> {
@@ -34,7 +34,7 @@ const sessionStore: NodeSavedSessionStore = {
 
 const stateStore: NodeSavedStateStore = {
   async set(key: string, stateData: NodeSavedState): Promise<void> {
-    const state = JSON.stringify(stateData);
+    const state = stateData;
 
     await db.insert(authState).values({ key, state });
   },
@@ -46,7 +46,7 @@ const stateStore: NodeSavedStateStore = {
 
     if (!stateData.state) return undefined;
 
-    return JSON.parse(stateData.state) as NodeSavedState;
+    return stateData.state;
   },
 
   async del(key: string): Promise<void> {
