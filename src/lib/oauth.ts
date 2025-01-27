@@ -63,7 +63,7 @@ export const createClient = async () => {
   return new NodeOAuthClient({
     clientMetadata: {
       client_name: "AT Protocol Express App",
-      client_id: `${process.env.ENV_MODE === 'dev' ? 'localhost' : url}?redirect_uri=${enc(`${url}/api/oauth/callback`)}&scope=${enc("atproto transition:generic")}`,
+      client_id: process.env.ENV_MODE === 'dev' ? `localhost?redirect_uri=${enc(`${url}/api/oauth/callback`)}&scope=${enc("atproto transition:generic")}` : `${url}/api/client-metadata.json`,
       client_uri: url,
       redirect_uris: [`${url}/api/oauth/callback`],
       scope: "atproto transition:generic",
