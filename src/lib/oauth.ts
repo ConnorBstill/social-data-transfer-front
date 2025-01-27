@@ -56,7 +56,7 @@ const stateStore: NodeSavedStateStore = {
 
 export const createClient = async () => {
   // const publicUrl = process.env.PUBLIC_URL
-  const url = process.env.DEV_MODE
+  const url = process.env.ENV_MODE === 'dev'
     ? `http://127.0.0.1:${process.env.PORT}`
     : process.env.PUBLIC_URL;
   const enc = encodeURIComponent;
