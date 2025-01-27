@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
-        source: '/client-metadata.json',
+        source: '/api/client-metadata.json',
         headers: [
           {
             key: 'Content-Type',
