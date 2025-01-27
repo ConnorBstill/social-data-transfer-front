@@ -4,7 +4,7 @@ import { ResponseBuilder } from "../../../lib/response-builder";
 
 import { createClient } from "@/lib/oauth";
 
-export const GET = async (res: NextResponse) => {
+export const GET = async () => {
   try {
     const metaData = await createClient();
 
