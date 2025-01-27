@@ -55,15 +55,18 @@ const stateStore: NodeSavedStateStore = {
 };
 
 export const createClient = async () => {
-  // const publicUrl = process.env.PUBLIC_URL
-  const url = process.env.ENV_MODE === 'dev'
-    ? `http://127.0.0.1:${process.env.PORT}`
-    : process.env.PUBLIC_URL;
+  const url =
+    process.env.ENV_MODE === "dev"
+      ? `http://127.0.0.1:${process.env.PORT}`
+      : process.env.PUBLIC_URL;
   const enc = encodeURIComponent;
   return new NodeOAuthClient({
     clientMetadata: {
       client_name: "AT Protocol Express App",
-      client_id: process.env.ENV_MODE === 'dev' ? `localhost?redirect_uri=${enc(`${url}/api/oauth/callback`)}&scope=${enc("atproto transition:generic")}` : `${url}/api/client-metadata.json`,
+      client_id:
+        process.env.ENV_MODE === "dev"
+          ? `localhost?redirect_uri=${enc(`${url}/api/oauth/callback`)}&scope=${enc("atproto transition:generic")}`
+          : `${url}/api/client-metadata.json`,
       client_uri: url,
       redirect_uris: [`${url}/api/oauth/callback`],
       scope: "atproto transition:generic",
