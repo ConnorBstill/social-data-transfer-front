@@ -29,9 +29,9 @@ export const POST = async (req: NextRequest) => {
     // connorbstill.bsky.social
     return new NextResponse(ResponseBuilder({ redirectUrl }, "success", false));
   } catch (err) {
-    console.error("error in api/oauth/initiate", err);
+    console.error("App error in api/oauth/initiate", err);
     return new NextResponse(
-      ResponseBuilder(null, "Error fetching word list", true),
+      ResponseBuilder(null, "Error logging in", true),
     );
   }
 };
