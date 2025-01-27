@@ -4,11 +4,15 @@ import { ResponseBuilder } from "../../../lib/response-builder";
 
 import { createClient } from "@/lib/oauth";
 
-export const GET = async () => {
+export const GET = async (res: NextResponse) => {
   try {
     const metaData = await createClient();
 
-    return new NextResponse(JSON.stringify(metaData.clientMetadata));
+    const response = NextResponse.json(metaData.clientMetadata);
+
+    response.headers.set('Content-Type', 'application/json')
+
+    return response;
   } catch (err) {
     console.error("error in api/related-words", err);
     return new NextResponse(
