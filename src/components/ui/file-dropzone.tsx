@@ -1,11 +1,13 @@
 "use client";
 
 import React, { useRef, useState, type ChangeEvent } from "react";
+import { useMutation } from "@tanstack/react-query";
 
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { X } from "lucide-react";
 
 import { getAllFileEntries } from "../../lib/utils";
+import { Folder } from "@/lib/types";
 
 declare module "react" {
   interface InputHTMLAttributes<T> extends HTMLAttributes<T> {
@@ -13,14 +15,25 @@ declare module "react" {
   }
 }
 
-interface Folder {
-  name: string;
-  files: FileSystemEntry[] | FileList;
-}
-
 export default function FileDropzone() {
   const [dragCounter, setDragCounter] = useState(0);
   const [uploadedFolders, setUploadedFolders] = useState<Folder[]>([]);
+
+  const startTransferMutation = useMutation({
+    mutationFn: authenticateUser,
+    onSuccess: (res) => {
+      const {
+        err,
+        data: { jwt, refreshToken },
+      } = res;
+
+      if (!err) {
+        setJwt(jwt);
+        setRefresh(refreshToken);
+        navigate("/main/my-workouts");
+      }
+    },
+  });
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -77,6 +90,8 @@ export default function FileDropzone() {
       });
     }
   };
+
+  const handleStartTransferClick = () => {};
 
   const handleRemoveFilesClick = (index: number) => {
     // Allows the user to upload the same file again if they accidentally delete it
@@ -161,6 +176,16 @@ export default function FileDropzone() {
         <h1 className="mb-5">Files Uploaded:</h1>
 
         <ul>{renderUploadedFiles()}</ul>
+
+        <Button
+          onClick={handleStartTransferClick}
+          disabled={uploadedFolders.length < 2}
+          className={
+            uploadedFolders.length < 2 ? "pointer-events-none opacity-50" : ""
+          }
+        >
+          Start transfer
+        </Button>
       </div>
     </div>
   );

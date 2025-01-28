@@ -30,8 +30,6 @@ export const POST = async (req: NextRequest) => {
     return new NextResponse(ResponseBuilder({ redirectUrl }, "success", false));
   } catch (err) {
     console.error("App error in api/oauth/initiate", err);
-    return new NextResponse(
-      ResponseBuilder(null, "Error logging in", true),
-    );
+    return new NextResponse(ResponseBuilder(null, "Error logging in", true));
   }
 };

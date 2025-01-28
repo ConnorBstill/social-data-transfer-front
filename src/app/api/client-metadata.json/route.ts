@@ -10,7 +10,7 @@ export const GET = async () => {
 
     const response = NextResponse.json(metaData.clientMetadata);
 
-    response.headers.set('Content-Type', 'application/json')
+    response.headers.set("Content-Type", "application/json");
 
     return response;
   } catch (err) {

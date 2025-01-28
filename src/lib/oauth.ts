@@ -5,10 +5,36 @@ import {
   NodeSavedState,
   NodeSavedStateStore,
 } from "@atproto/oauth-client-node";
+import { Agent } from "@atproto/api";
+import { getIronSession } from "iron-session";
 
+import { eq } from "drizzle-orm";
 import { db } from "@/server/db";
 import { authSession, authState } from "@/server/db/schema";
-import { eq } from "drizzle-orm";
+
+import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
+import { OauthSession } from "./types";
+
+export const getSessionAgent = async (
+  cookies: ReadonlyRequestCookies,
+  oauthClient: NodeOAuthClient,
+): Promise<Agent | null> => {
+  const session = await getIronSession<OauthSession>(cookies, {
+    cookieName: "sid",
+    password: process.env.COOKIE_SECRET,
+  });
+
+  if (!session.did) return null;
+
+  try {
+    const oauthSession = await oauthClient.restore(session.did);
+    return oauthSession ? new Agent(oauthSession) : null;
+  } catch (err) {
+    console.error("Error getting oauth session", err);
+    await session.destroy();
+    return null;
+  }
+};
 
 const sessionStore: NodeSavedSessionStore = {
   async set(key: string, sessionData: NodeSavedSession) {
@@ -65,7 +91,7 @@ export const createClient = async () => {
       client_name: "AT Protocol Express App",
       client_id:
         process.env.ENV_MODE === "dev"
-          ? `localhost?redirect_uri=${enc(`${url}/api/oauth/callback`)}&scope=${enc("atproto transition:generic")}`
+          ? `http://localhost?redirect_uri=${enc(`${url}/api/oauth/callback`)}&scope=${enc("atproto transition:generic")}`
           : `${url}/api/client-metadata.json`,
       client_uri: url,
       redirect_uris: [`${url}/api/oauth/callback`],

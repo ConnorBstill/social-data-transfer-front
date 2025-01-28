@@ -7,9 +7,7 @@ import { ResponseBuilder } from "../../../../lib/response-builder";
 
 import { createClient } from "@/lib/oauth";
 
-interface Session {
-  did: string;
-}
+import { OauthSession } from "@/lib/types";
 
 export const GET = async (req: NextRequest) => {
   try {
@@ -17,7 +15,7 @@ export const GET = async (req: NextRequest) => {
     const oauthClient = await createClient();
 
     const { session } = await oauthClient.callback(params);
-    const clientSession = await getIronSession<Session>(await cookies(), {
+    const clientSession = await getIronSession<OauthSession>(await cookies(), {
       cookieName: "sid",
       password: process.env.COOKIE_SECRET,
     });
