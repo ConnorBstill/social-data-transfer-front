@@ -8,7 +8,7 @@ import { X } from "lucide-react";
 
 import { startInstagramTransfer } from "@/services/transfer/transfer-actions";
 
-import { getAllFileEntries } from "../../lib/utils";
+import { getAllFileEntries } from "@/lib/utils";
 import { Folder } from "@/lib/types";
 
 declare module "react" {

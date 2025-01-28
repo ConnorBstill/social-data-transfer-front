@@ -1,9 +1,3 @@
-// interface Response<T> {
-//   data: T;
-//   msg: string;
-//   err: boolean;
-// }
-
 interface MainResponseBuilderOptions {
   error?: Error;
   log?: boolean;

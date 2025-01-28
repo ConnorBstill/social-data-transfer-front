@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 import { ResponseBuilder } from "../../../lib/response-builder";
 
-import { createClient } from "@/lib/oauth";
+import { createClient } from "@/lib/auth";
 
 export const GET = async () => {
   try {

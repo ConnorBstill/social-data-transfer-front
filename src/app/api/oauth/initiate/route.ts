@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { isValidHandle } from "@atproto/syntax";
 import type { OAuthClient } from "@atproto/oauth-client-node";
 
-import { createClient } from "@/lib/oauth";
+import { createClient } from "@/lib/auth";
 
 import { ResponseBuilder } from "../../../../lib/response-builder";
 

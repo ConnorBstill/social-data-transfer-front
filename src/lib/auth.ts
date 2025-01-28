@@ -19,10 +19,7 @@ export const getSessionAgent = async (
   cookies: ReadonlyRequestCookies,
   oauthClient: NodeOAuthClient,
 ): Promise<Agent | null> => {
-  const session = await getIronSession<OauthSession>(cookies, {
-    cookieName: "sid",
-    password: process.env.COOKIE_SECRET,
-  });
+  const session = await getCookieSession(cookies);
 
   if (!session.did) return null;
 
@@ -108,4 +105,20 @@ export const createClient = async () => {
     sessionStore,
     stateStore,
   });
+};
+
+export const getCookieSession = async (cookies: ReadonlyRequestCookies) => {
+  return await getIronSession<OauthSession>(cookies, {
+    cookieName: "sid",
+    password: process.env.COOKIE_SECRET,
+  });
+};
+
+export const destroyCookieSession = async (cookies: ReadonlyRequestCookies) => {
+  const session = await getIronSession<OauthSession>(cookies, {
+    cookieName: "sid",
+    password: process.env.COOKIE_SECRET,
+  });
+
+  await session.destroy();
 };

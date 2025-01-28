@@ -1,13 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
-import { getIronSession } from "iron-session";
-
-import { ResponseBuilder } from "../../../../lib/response-builder";
-
-import { createClient } from "@/lib/oauth";
-
-import { OauthSession } from "@/lib/types";
+import { createClient, getCookieSession } from "@/lib/auth";
 
 export const GET = async (req: NextRequest) => {
   try {
@@ -15,10 +9,7 @@ export const GET = async (req: NextRequest) => {
     const oauthClient = await createClient();
     const { session } = await oauthClient.callback(params);
 
-    const clientSession = await getIronSession<OauthSession>(await cookies(), {
-      cookieName: "sid",
-      password: process.env.COOKIE_SECRET,
-    });
+    const clientSession = await getCookieSession(await cookies());
 
     clientSession.did = session.did;
 
