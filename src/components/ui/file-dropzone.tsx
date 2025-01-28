@@ -6,6 +6,8 @@ import { useMutation } from "@tanstack/react-query";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { X } from "lucide-react";
 
+import { startInstagramTransfer } from "@/services/transfer/transfer-actions";
+
 import { getAllFileEntries } from "../../lib/utils";
 import { Folder } from "@/lib/types";
 
@@ -19,21 +21,21 @@ export default function FileDropzone() {
   const [dragCounter, setDragCounter] = useState(0);
   const [uploadedFolders, setUploadedFolders] = useState<Folder[]>([]);
 
-  const startTransferMutation = useMutation({
-    mutationFn: authenticateUser,
-    onSuccess: (res) => {
-      const {
-        err,
-        data: { jwt, refreshToken },
-      } = res;
+  // const startTransferMutation = useMutation({
+  //   mutationFn: startInstagramTransfer,
+  //   onSuccess: (res) => {
+  //     const {
+  //       err,
+  //       data: { jwt, refreshToken },
+  //     } = res;
 
-      if (!err) {
-        setJwt(jwt);
-        setRefresh(refreshToken);
-        navigate("/main/my-workouts");
-      }
-    },
-  });
+  //     if (!err) {
+  //       setJwt(jwt);
+  //       setRefresh(refreshToken);
+  //       navigate("/main/my-workouts");
+  //     }
+  //   },
+  // });
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 

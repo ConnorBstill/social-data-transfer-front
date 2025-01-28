@@ -37,8 +37,13 @@ export const getSessionAgent = async (
 };
 
 const sessionStore: NodeSavedSessionStore = {
-  async set(key: string, sessionData: NodeSavedSession) {
-    const session = sessionData;
+  async set(key: string, session: NodeSavedSession) {
+    const [prevSessionKey] = await await db.query.authSession.findMany({
+      where: (data, { eq }) => eq(data.key, key),
+    });
+
+    if (prevSessionKey)
+      await db.delete(authSession).where(eq(authSession.key, key));
 
     await db.insert(authSession).values({ key, session });
   },
@@ -59,9 +64,7 @@ const sessionStore: NodeSavedSessionStore = {
 };
 
 const stateStore: NodeSavedStateStore = {
-  async set(key: string, stateData: NodeSavedState): Promise<void> {
-    const state = stateData;
-
+  async set(key: string, state: NodeSavedState): Promise<void> {
     await db.insert(authState).values({ key, state });
   },
 
