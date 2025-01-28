@@ -1,3 +1,4 @@
+import { post } from "../http-service";
 import { Folder } from "@/lib/types";
 
 export const startInstagramTransfer = async (
@@ -10,16 +11,12 @@ export const startInstagramTransfer = async (
 
     for (let j = 0; j < folder.files.length; j++) {
       const file = folder.files[j];
-      console.log("file", file);
+
+      formData.append(file.name, file as Blob);
     }
   }
 
-  // folders.forEach((file, index) => {
-  //   formData.append(`file${index}`, file.files);
-  // });
+  const response = await post("/api/upload/instagram", formData);
 
-  // const response = await fetch("/api/upload/instagram", {
-  //   method: "POST",
-  //   body: formData,
-  // });
+  return await response.json();
 };

@@ -21,21 +21,21 @@ export default function FileDropzone() {
   const [dragCounter, setDragCounter] = useState(0);
   const [uploadedFolders, setUploadedFolders] = useState<Folder[]>([]);
 
-  // const startTransferMutation = useMutation({
-  //   mutationFn: startInstagramTransfer,
-  //   onSuccess: (res) => {
-  //     const {
-  //       err,
-  //       data: { jwt, refreshToken },
-  //     } = res;
+  const { mutate: startTransfer } = useMutation({
+    mutationFn: startInstagramTransfer,
+    onSuccess: (res) => {
+      const {
+        err,
+        data: { jwt, refreshToken },
+      } = res;
 
-  //     if (!err) {
-  //       setJwt(jwt);
-  //       setRefresh(refreshToken);
-  //       navigate("/main/my-workouts");
-  //     }
-  //   },
-  // });
+      // if (!err) {
+      //   setJwt(jwt);
+      //   setRefresh(refreshToken);
+      //   navigate("/main/my-workouts");
+      // }
+    },
+  });
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -93,7 +93,9 @@ export default function FileDropzone() {
     }
   };
 
-  const handleStartTransferClick = () => {};
+  const handleStartTransferClick = () => {
+    startTransfer(uploadedFolders);
+  };
 
   const handleRemoveFilesClick = (index: number) => {
     // Allows the user to upload the same file again if they accidentally delete it
