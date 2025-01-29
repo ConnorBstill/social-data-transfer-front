@@ -1,3 +1,4 @@
+import { Agent } from "@atproto/api";
 import {
   NodeOAuthClient,
   NodeSavedSession,
@@ -5,15 +6,14 @@ import {
   NodeSavedState,
   NodeSavedStateStore,
 } from "@atproto/oauth-client-node";
-import { Agent } from "@atproto/api";
 import { getIronSession } from "iron-session";
 
-import { eq } from "drizzle-orm";
 import { db } from "@/server/db";
 import { authSession, authState } from "@/server/db/schema";
+import { eq } from "drizzle-orm";
 
-import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 import { OauthSession } from "./types";
+import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 
 export const getSessionAgent = async (
   cookies: ReadonlyRequestCookies,

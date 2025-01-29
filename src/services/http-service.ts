@@ -1,4 +1,9 @@
-export const get = async (url: string, headers?: HeadersInit) => {
+import { Response } from "@/lib/types";
+
+export const get = async (
+  url: string,
+  headers?: HeadersInit,
+): Promise<Response<object>> => {
   const res = await fetch(url, {
     method: "GET",
     headers: {
@@ -13,7 +18,7 @@ export const post = async (
   url: string,
   body: BodyInit,
   headers?: HeadersInit,
-): Promise<any> => {
+): Promise<Response<object>> => {
   const res = await fetch(url, {
     method: "POST",
     headers: {
@@ -29,7 +34,7 @@ export const put = async (
   url: string,
   body: BodyInit,
   headers?: HeadersInit,
-) => {
+): Promise<Response<object>> => {
   const res = await fetch(url, {
     method: "PUT",
     headers: {
@@ -42,7 +47,10 @@ export const put = async (
   return res.json();
 };
 
-export const remove = async (url: string, headers?: HeadersInit) => {
+export const remove = async (
+  url: string,
+  headers?: HeadersInit,
+): Promise<Response<object>> => {
   const res = await fetch(url, {
     method: "DELETE",
     headers: { ...headers },

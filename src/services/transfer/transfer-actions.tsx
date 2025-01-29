@@ -1,9 +1,9 @@
 import { post } from "../http-service";
-import { Folder } from "@/lib/types";
+import { Folder, Response } from "@/lib/types";
 
 export const startInstagramTransfer = async (
   folders: Folder[],
-): Promise<any> => {
+): Promise<Response<object>> => {
   const formData = new FormData();
 
   for (let i = 0; i < folders.length; i++) {
@@ -18,5 +18,5 @@ export const startInstagramTransfer = async (
 
   const response = await post("/api/upload/instagram", formData);
 
-  return await response.json();
+  return await response;
 };

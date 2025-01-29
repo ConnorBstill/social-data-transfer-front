@@ -24,10 +24,11 @@ export default function FileDropzone() {
   const { mutate: startTransfer } = useMutation({
     mutationFn: startInstagramTransfer,
     onSuccess: (res) => {
-      const {
-        err,
-        data: { jwt, refreshToken },
-      } = res;
+      console.log("startInstagramTransfer res", res);
+      // const {
+      //   err,
+      //   data: { jwt, refreshToken },
+      // } = res;
 
       // if (!err) {
       //   setJwt(jwt);
