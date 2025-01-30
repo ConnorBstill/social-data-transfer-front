@@ -6,7 +6,7 @@ export interface Response<T> {
 
 export interface Folder {
   name: string;
-  files: FileSystemEntry[] | FileList;
+  files: File[];
 }
 
 export interface OauthSession {

@@ -7,8 +7,9 @@ export function cn(...inputs: ClassValue[]) {
 
 export const getAllFileEntries = async (
   items: DataTransferItemList,
-): Promise<FileSystemEntry[]> => {
-  const files: FileSystemEntry[] = [];
+): Promise<{ files: File[]; bytes: number }> => {
+  const files: File[] = [];
+  let bytes = 0;
 
   const queue: (FileSystemEntry | FileSystemDirectoryEntry)[] = [];
 
@@ -24,8 +25,22 @@ export const getAllFileEntries = async (
     const entry = queue.shift();
 
     if (entry?.isFile) {
-      const fileEntry = entry as FileSystemEntry;
-      files.push(fileEntry);
+      const fileEntry = entry as FileSystemFileEntry;
+
+      const file: File = await new Promise((resolve, reject) => {
+        fileEntry.file(
+          (f: File) => {
+            resolve(f);
+          },
+          (err) => {
+            console.error("error converting entry to file", err);
+            reject("error converting entry to file");
+          },
+        );
+      });
+
+      bytes += file.size;
+      files.push(file);
     } else if (entry?.isDirectory) {
       const dirEntry = entry as FileSystemDirectoryEntry;
       const reader = dirEntry.createReader();
@@ -34,7 +49,7 @@ export const getAllFileEntries = async (
     }
   }
 
-  return files;
+  return { files, bytes };
 };
 
 const readAllDirectoryEntries = async (reader: FileSystemDirectoryReader) => {
@@ -62,3 +77,7 @@ const readEntriesPromise = async (
     console.log("readEntriesPromise error", err);
   }
 };
+
+// const getBufferFromEntry = (file: File) => {
+//   const file
+// }

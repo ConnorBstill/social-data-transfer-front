@@ -67,13 +67,16 @@ export default function FileDropzone() {
 
     if (uploadedFolders.length < 2) {
       const items = e.dataTransfer?.items;
-      const files = await getAllFileEntries(items);
+      const entry = items[0].webkitGetAsEntry();
+      const { files, bytes } = await getAllFileEntries(items);
+      if (bytes > 1000000000) {
+        console.error("File too large");
+        return;
+      }
+      // console.log('FILES: ', files)
 
       setUploadedFolders((prevFolders) => {
-        return [
-          ...prevFolders,
-          { name: files[0].fullPath.split("/")[1], files },
-        ];
+        return [...prevFolders, { name: entry.name, files }];
       });
     }
   };
@@ -82,13 +85,24 @@ export default function FileDropzone() {
     e.preventDefault();
     e.stopPropagation();
 
-    const files = e.target.files;
+    let bytes = 0;
+
+    const [...files] = e.target.files;
+
+    for (let i = 0; i < files.length; i++) {
+      bytes += files[i].size;
+    }
+
+    if (bytes > 1000000000) {
+      console.error("File too large");
+      return;
+    }
 
     if (files && files.length) {
       setUploadedFolders((prevFolders) => {
         return [
           ...prevFolders,
-          { name: files[0].webkitRelativePath.split("/")[0], files },
+          { name: files[0].webkitRelativePath.split("/")[0], files: files },
         ];
       });
     }
