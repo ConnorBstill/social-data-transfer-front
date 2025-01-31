@@ -71,7 +71,7 @@ export default function FileDropzone() {
       const entry = items[0].webkitGetAsEntry();
       const { files, bytes } = await getAllFileEntries(items);
 
-      setTotalFileBytes(prevBytes => prevBytes + bytes);
+      setTotalFileBytes((prevBytes) => prevBytes + bytes);
 
       if (bytesToMegs(totalFileBytes) > 500) {
         console.error("File too large");
@@ -80,12 +80,12 @@ export default function FileDropzone() {
 
       setUploadedFolders((prevFolders) => {
         return [
-          ...prevFolders, 
-          { 
-            name: entry.name, 
+          ...prevFolders,
+          {
+            name: entry.name,
             files,
-            totalFolderBytes: bytes
-          }
+            totalFolderBytes: bytes,
+          },
         ];
       });
     }
@@ -103,7 +103,7 @@ export default function FileDropzone() {
       bytes += files[i].size;
     }
 
-    setTotalFileBytes(prevBytes => prevBytes + bytes);
+    setTotalFileBytes((prevBytes) => prevBytes + bytes);
 
     if (bytesToMegs(totalFileBytes) > 500) {
       console.error("File too large");
@@ -114,10 +114,10 @@ export default function FileDropzone() {
       setUploadedFolders((prevFolders) => {
         return [
           ...prevFolders,
-          { 
-            name: files[0].webkitRelativePath.split("/")[0], 
-            files: files, 
-            totalFolderBytes: bytes
+          {
+            name: files[0].webkitRelativePath.split("/")[0],
+            files: files,
+            totalFolderBytes: bytes,
           },
         ];
       });
@@ -133,8 +133,9 @@ export default function FileDropzone() {
     fileInputRef.current!.value = "";
 
     setTotalFileBytes(
-      prevFileBytes => prevFileBytes - uploadedFolders[index].totalFolderBytes
-    )
+      (prevFileBytes) =>
+        prevFileBytes - uploadedFolders[index].totalFolderBytes,
+    );
 
     setUploadedFolders((prevFolders) => {
       const copy = [...prevFolders];

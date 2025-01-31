@@ -39,9 +39,9 @@ export const getAllFileEntries = async (
         );
       });
 
-      if (file.type === 'video/mp4') {
+      if (file.type === "video/mp4") {
         const videoLength = await getVideoLength(file);
-        
+
         if (videoLength < 60) {
           bytes += file.size;
           files.push(file);
@@ -94,10 +94,10 @@ const getVideoLength = async (video: File): Promise<number> => {
   const duration = videoBuffer.readUInt32BE(videoStart + 4);
 
   const videoLength = Math.floor(duration / timeScale);
-  
+
   return videoLength;
-}
+};
 
 export const bytesToMegs = (bytes: number) => {
-  return Math.floor((bytes / 1024) / 1024);
-}
+  return Math.floor(bytes / 1024 / 1024);
+};
