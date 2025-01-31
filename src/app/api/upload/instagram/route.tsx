@@ -1,10 +1,10 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 import { createClient, getSessionAgent } from "@/lib/auth";
 import { cookies } from "next/headers";
 import { ResponseBuilder } from "../../../../lib/response-builder";
 
-export const POST = async () => {
+export const POST = async (req: NextRequest) => {
   try {
     const oauthClient = await createClient();
     const sessionCookies = await cookies();
@@ -15,25 +15,28 @@ export const POST = async () => {
       return new NextResponse(ResponseBuilder(null, "Session required", true));
     }
 
-    // const uploadDir = path.join(process.cwd(), "social-data-temp");
+    const data: FormData = await req.formData();
 
-    // const data: FormData = await req.formData();
-    // // console.log('FORMA DATA: ', data)
     // const posts = [];
-    // // const media
-    // let bytes = 0;
-    // for (let entry of data) {
-    //   const fileName = entry[0];
-    //   const file = entry[1] as File;
-    //   // console.log(file.size)
+    // const media
+    let bytes = 0;
+    for (let entry of data) {
+      const fileName = entry[0];
+      const file = entry[1] as File;
+      
+      if (fileName.includes('posts_1.json')) {
+        const fileArrayBuffer = await file.arrayBuffer();
+        const fileDataBuffer = Buffer.from(fileArrayBuffer).toJSON().data;
+        const fileJsonString = Buffer.from(fileDataBuffer).toString('utf-8');
 
-    //   bytes += file.size;
-
-    //   // if (fileName.includes('posts_')) posts.push(entry)
-    // }
-    // const kilobytes = bytes / 1024;
-    // const megabytes = kilobytes / 1024;
-    // console.log(megabytes.toFixed(2));
+        console.log("fileJsonString", fileJsonString);
+      }
+      
+      bytes += file.size;
+    }
+    const kilobytes = bytes / 1024;
+    const megabytes = kilobytes / 1024;
+    console.log(megabytes.toFixed(2));
 
     return new NextResponse(
       ResponseBuilder({ success: true }, "success", false),
