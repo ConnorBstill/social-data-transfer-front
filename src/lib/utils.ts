@@ -39,8 +39,14 @@ export const getAllFileEntries = async (
         );
       });
 
-      bytes += file.size;
-      files.push(file);
+      if (file.type === 'video/mp4') {
+        const videoLength = await getVideoLength(file);
+        
+        if (videoLength < 60) {
+          bytes += file.size;
+          files.push(file);
+        }
+      }
     } else if (entry?.isDirectory) {
       const dirEntry = entry as FileSystemDirectoryEntry;
       const reader = dirEntry.createReader();
@@ -78,6 +84,20 @@ const readEntriesPromise = async (
   }
 };
 
-// const getBufferFromEntry = (file: File) => {
-//   const file
-// }
+const getVideoLength = async (video: File): Promise<number> => {
+  const header = Buffer.from("mvhd");
+  const videoArrayBuffer = await video.arrayBuffer();
+  const videoBuffer = Buffer.from(videoArrayBuffer);
+
+  const videoStart = videoBuffer.indexOf(header) + 17;
+  const timeScale = videoBuffer.readUInt32BE(videoStart);
+  const duration = videoBuffer.readUInt32BE(videoStart + 4);
+
+  const videoLength = Math.floor(duration / timeScale);
+  
+  return videoLength;
+}
+
+export const bytesToMegs = (bytes: number) => {
+  return Math.floor((bytes / 1024) / 1024);
+}

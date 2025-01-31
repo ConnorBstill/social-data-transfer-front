@@ -7,6 +7,7 @@ export interface Response<T> {
 export interface Folder {
   name: string;
   files: File[];
+  totalFolderBytes: number;
 }
 
 export interface OauthSession {

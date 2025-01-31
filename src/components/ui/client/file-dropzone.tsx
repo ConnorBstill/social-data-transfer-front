@@ -8,7 +8,7 @@ import { X } from "lucide-react";
 
 import { startInstagramTransfer } from "@/services/transfer/transfer-actions";
 
-import { getAllFileEntries } from "@/lib/utils";
+import { getAllFileEntries, bytesToMegs } from "@/lib/utils";
 import { Folder } from "@/lib/types";
 
 declare module "react" {
@@ -20,6 +20,7 @@ declare module "react" {
 export default function FileDropzone() {
   const [dragCounter, setDragCounter] = useState(0);
   const [uploadedFolders, setUploadedFolders] = useState<Folder[]>([]);
+  const [totalFileBytes, setTotalFileBytes] = useState<number>(0);
 
   const { mutate: startTransfer } = useMutation({
     mutationFn: startInstagramTransfer,
@@ -69,14 +70,23 @@ export default function FileDropzone() {
       const items = e.dataTransfer?.items;
       const entry = items[0].webkitGetAsEntry();
       const { files, bytes } = await getAllFileEntries(items);
-      if (bytes > 1000000000) {
+
+      setTotalFileBytes(prevBytes => prevBytes + bytes);
+
+      if (bytesToMegs(totalFileBytes) > 500) {
         console.error("File too large");
         return;
       }
-      // console.log('FILES: ', files)
 
       setUploadedFolders((prevFolders) => {
-        return [...prevFolders, { name: entry.name, files }];
+        return [
+          ...prevFolders, 
+          { 
+            name: entry.name, 
+            files,
+            totalFolderBytes: bytes
+          }
+        ];
       });
     }
   };
@@ -93,7 +103,9 @@ export default function FileDropzone() {
       bytes += files[i].size;
     }
 
-    if (bytes > 1000000000) {
+    setTotalFileBytes(prevBytes => prevBytes + bytes);
+
+    if (bytesToMegs(totalFileBytes) > 500) {
       console.error("File too large");
       return;
     }
@@ -102,7 +114,11 @@ export default function FileDropzone() {
       setUploadedFolders((prevFolders) => {
         return [
           ...prevFolders,
-          { name: files[0].webkitRelativePath.split("/")[0], files: files },
+          { 
+            name: files[0].webkitRelativePath.split("/")[0], 
+            files: files, 
+            totalFolderBytes: bytes
+          },
         ];
       });
     }
@@ -113,8 +129,12 @@ export default function FileDropzone() {
   };
 
   const handleRemoveFilesClick = (index: number) => {
-    // Allows the user to upload the same file again if they accidentally delete it
+    // Lets the user to upload the same file again if they accidentally delete it
     fileInputRef.current!.value = "";
+
+    setTotalFileBytes(
+      prevFileBytes => prevFileBytes - uploadedFolders[index].totalFolderBytes
+    )
 
     setUploadedFolders((prevFolders) => {
       const copy = [...prevFolders];
