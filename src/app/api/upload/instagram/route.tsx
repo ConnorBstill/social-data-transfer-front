@@ -1,14 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
-import { AppBskyVideoDefs, AppBskyEmbedVideo, BlobRef, AtpAgent } from "@atproto/api";
+import {
+  AppBskyVideoDefs,
+  AppBskyEmbedVideo,
+  BlobRef,
+  AtpAgent,
+} from "@atproto/api";
 
 import { ResponseBuilder } from "../../../../lib/response-builder";
 import { createClient, getSessionAgent } from "@/lib/auth";
 import { InstagramPost } from "@/lib/types";
-import { DidDocument } from '@/lib/types.atproto';
+import { DidDocument } from "@/lib/types.atproto";
 import { getVideoBuffer } from "@/lib/utils";
-
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -24,10 +28,10 @@ export const POST = async (req: NextRequest) => {
 
     const repo = await agent.com.atproto.repo.describeRepo({ repo: agent.did });
     const didDoc = repo.data.didDoc as DidDocument;
-    console.log('agent.did', agent.did)
+    console.log("agent.did", agent.did);
     const { data: serviceAuth } = await agent.com.atproto.server.getServiceAuth(
       {
-        aud: `did:web:${didDoc.service[0].serviceEndpoint.split('https://')[1]}`,
+        aud: `did:web:${didDoc.service[0].serviceEndpoint.split("https://")[1]}`,
         lxm: "com.atproto.repo.uploadBlob",
         exp: Date.now() / 1000 + 60 * 30, // 30 minutes
       },
@@ -39,7 +43,7 @@ export const POST = async (req: NextRequest) => {
     const posts: InstagramPost[] = [];
     const media = new Map<string, File>();
     console.log("running");
-    let videoCount = 0
+    let videoCount = 0;
     for (const entry of data) {
       const fileName = entry[0];
       const file = entry[1] as File;
@@ -63,14 +67,18 @@ export const POST = async (req: NextRequest) => {
             file.name ===
             "AQNFqi3xj_vomVY0082lZ1zTjYofgZ3Is86TMLDdUYloqD4w_gg5pbyVwcuYZbubSvtBz79ezy_hd5jrNUcvvvXKCEbJO1hxj9sosI_17856440947040868.mp4"
           ) {
-
             const fileBuffer = await getVideoBuffer(file);
-            console.log('agent.sessionManager.did', agent.sessionManager.did)
-            const uploadUrl = new URL("https://video.bsky.app/xrpc/app.bsky.video.uploadVideo");
+            console.log("agent.sessionManager.did", agent.sessionManager.did);
+            const uploadUrl = new URL(
+              "https://video.bsky.app/xrpc/app.bsky.video.uploadVideo",
+            );
 
             uploadUrl.searchParams.append("did", agent.did);
-            uploadUrl.searchParams.append("name", file.name.split('.')[0] + 'try1');
-            console.log('bearer:', token)
+            uploadUrl.searchParams.append(
+              "name",
+              file.name.split(".")[0] + "try1",
+            );
+            console.log("bearer:", token);
             const videoUploadResponse = await fetch(uploadUrl, {
               method: "POST",
               headers: {
@@ -81,14 +89,16 @@ export const POST = async (req: NextRequest) => {
               body: fileBuffer,
             });
 
-            const jobStatus = (await videoUploadResponse.json()) as AppBskyVideoDefs.JobStatus;
+            const jobStatus =
+              (await videoUploadResponse.json()) as AppBskyVideoDefs.JobStatus;
 
             let blob: BlobRef | undefined = jobStatus.blob;
 
             while (!blob) {
-              const { data: status } = await videoAgent.app.bsky.video.getJobStatus(
-                { jobId: jobStatus.jobId },
-              );
+              const { data: status } =
+                await videoAgent.app.bsky.video.getJobStatus({
+                  jobId: jobStatus.jobId,
+                });
               console.log(
                 "Status:",
                 status.jobStatus.state,
@@ -101,7 +111,7 @@ export const POST = async (req: NextRequest) => {
               await new Promise((resolve) => setTimeout(resolve, 1000));
             }
 
-            console.log('videoUploadResponse blob?', blob);
+            console.log("videoUploadResponse blob?", blob);
 
             console.log("posting...");
 
@@ -123,7 +133,7 @@ export const POST = async (req: NextRequest) => {
           break;
       }
     }
-    console.log('videoCount', videoCount)
+    console.log("videoCount", videoCount);
     console.log("posts.length", posts.length);
 
     return new NextResponse(

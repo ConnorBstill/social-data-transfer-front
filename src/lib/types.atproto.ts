@@ -1,7 +1,7 @@
 export interface PDSService {
   id: string;
   type: string;
-  serviceEndpoint: string;  
+  serviceEndpoint: string;
 }
 
 export interface VerificationMethod {
@@ -13,8 +13,8 @@ export interface VerificationMethod {
 
 export interface DidDocument {
   id: string;
-  '@context': string[];
+  "@context": string[];
   alsoKnownAs: string[];
   verificationMethod: VerificationMethod[];
-  service: PDSService[]
+  service: PDSService[];
 }

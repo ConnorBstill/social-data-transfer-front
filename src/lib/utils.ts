@@ -89,7 +89,7 @@ export const getVideoBuffer = async (videoFile: File) => {
   const videoBuffer = Buffer.from(videoArrayBuffer);
 
   return videoBuffer;
-}
+};
 
 const getVideoLength = async (video: File): Promise<number> => {
   const header = Buffer.from("mvhd");
