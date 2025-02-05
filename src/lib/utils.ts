@@ -84,10 +84,16 @@ const readEntriesPromise = async (
   }
 };
 
+export const getVideoBuffer = async (videoFile: File) => {
+  const videoArrayBuffer = await videoFile.arrayBuffer();
+  const videoBuffer = Buffer.from(videoArrayBuffer);
+
+  return videoBuffer;
+}
+
 const getVideoLength = async (video: File): Promise<number> => {
   const header = Buffer.from("mvhd");
-  const videoArrayBuffer = await video.arrayBuffer();
-  const videoBuffer = Buffer.from(videoArrayBuffer);
+  const videoBuffer = await getVideoBuffer(video);
 
   const videoStart = videoBuffer.indexOf(header) + 17;
   const timeScale = videoBuffer.readUInt32BE(videoStart);
