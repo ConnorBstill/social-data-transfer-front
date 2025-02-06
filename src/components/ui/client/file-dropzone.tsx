@@ -72,12 +72,12 @@ export default function FileDropzone() {
       const { files, bytes } = await getAllFileEntries(items);
 
       setTotalFileBytes((prevBytes) => prevBytes + bytes);
-
+      console.log("bytesToMegs(totalFileBytes)", bytesToMegs(totalFileBytes));
       if (bytesToMegs(totalFileBytes) > 500) {
         console.error("File too large");
         return;
       }
-
+      console.log("files", files);
       setUploadedFolders((prevFolders) => {
         return [
           ...prevFolders,

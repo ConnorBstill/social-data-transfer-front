@@ -46,6 +46,9 @@ export const getAllFileEntries = async (
           bytes += file.size;
           files.push(file);
         }
+      } else {
+        bytes += file.size;
+        files.push(file);
       }
     } else if (entry?.isDirectory) {
       const dirEntry = entry as FileSystemDirectoryEntry;
@@ -84,7 +87,7 @@ const readEntriesPromise = async (
   }
 };
 
-export const getVideoBuffer = async (videoFile: File) => {
+export const getBufferFromFile = async (videoFile: File) => {
   const videoArrayBuffer = await videoFile.arrayBuffer();
   const videoBuffer = Buffer.from(videoArrayBuffer);
 
@@ -93,7 +96,7 @@ export const getVideoBuffer = async (videoFile: File) => {
 
 const getVideoLength = async (video: File): Promise<number> => {
   const header = Buffer.from("mvhd");
-  const videoBuffer = await getVideoBuffer(video);
+  const videoBuffer = await getBufferFromFile(video);
 
   const videoStart = videoBuffer.indexOf(header) + 17;
   const timeScale = videoBuffer.readUInt32BE(videoStart);
